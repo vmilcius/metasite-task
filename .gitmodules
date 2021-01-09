@@ -1,0 +1,3 @@
+[submodule "lib/CommandLineUtils"]
+	path = lib/CommandLineUtils
+	url = https://github.com/vmilcius/CommandLineUtils.git

@@ -1,8 +1,9 @@
 ﻿namespace Metasite.WeatherApp.UserInterface.CommandHandlers
 {
+    using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
-    using Application;
     using Infrastructure;
     using JetBrains.Annotations;
     using McMaster.Extensions.CommandLineUtils;
@@ -10,29 +11,21 @@
     [Command(Name = "weather", Description = "Prints weather data.")]
     public class WeatherCommandHandler : BaseCommandHandler
     {
-        private readonly WeatherDataList _serversList;
+        private readonly Func<IEnumerable<string>, RecurringWeatherFetchService> _serviceFactory;
 
         [Option("-c|--city", "Cities", CommandOptionType.MultipleValue)]
         [UsedImplicitly]
-        private bool LoadCachedServers { get; }
+        private string[] Cities { get; } = Array.Empty<string>();
 
-        public WeatherCommandHandler(WeatherDataList serversList)
+        public WeatherCommandHandler(
+            Func<IEnumerable<string>, RecurringWeatherFetchService> serviceFactory)
         {
-            _serversList = serversList;
+            _serviceFactory = serviceFactory;
         }
 
-        protected override async Task OnExecuteAsync(CommandLineApplication app)
+        protected override async Task OnExecuteAsync(CommandLineApplication app, CancellationToken ct)
         {
-            IEnumerable<Weather> servers;
-
-            if (LoadCachedServers)
-            {
-                servers = await _serversList.GetCached();
-            }
-            else
-            {
-                servers = await _serversList.GetLatest();
-            }
+            await _serviceFactory(Cities).StartAsync(ct);
         }
     }
 }

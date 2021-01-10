@@ -1,7 +1,8 @@
 ﻿#nullable disable
 namespace Metasite.WeatherApp.Infrastructure.Storage
 {
-    using System.Linq;
+    using System;
+    using System.IO;
     using System.Threading.Tasks;
     using Domain;
     using JetBrains.Annotations;
@@ -10,28 +11,30 @@ namespace Metasite.WeatherApp.Infrastructure.Storage
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
 
-    public class LocationsDbContext : DbContext
+    public class WeatherConditionsDbContext : DbContext
     {
         private readonly string _connectionString;
-        private readonly ILogger<LocationsDbContext> _logger;
+        private readonly ILogger<WeatherConditionsDbContext> _logger;
 
         [UsedImplicitly]
-        public DbSet<Location> Locations { get; set; }
+        public DbSet<WeatherConditions> WeatherConditions { get; set; }
 
-        public LocationsDbContext()
+        public WeatherConditionsDbContext()
         {
-            _logger = NullLogger<LocationsDbContext>.Instance;
+            _logger = NullLogger<WeatherConditionsDbContext>.Instance;
         }
 
-        public LocationsDbContext(ILogger<LocationsDbContext> logger)
+        public WeatherConditionsDbContext(ILogger<WeatherConditionsDbContext> logger)
         {
             _logger = logger;
         }
 
-        public LocationsDbContext(string connectionString, ILogger<LocationsDbContext> logger = null)
+        public WeatherConditionsDbContext(
+            string connectionString,
+            ILogger<WeatherConditionsDbContext> logger = null)
         {
             _connectionString = connectionString;
-            _logger = logger ?? NullLogger<LocationsDbContext>.Instance;
+            _logger = logger ?? NullLogger<WeatherConditionsDbContext>.Instance;
         }
 
         /// <summary>
@@ -40,26 +43,14 @@ namespace Metasite.WeatherApp.Infrastructure.Storage
         /// <returns></returns>
         public async Task MigrateDatabase()
         {
-            var pendingMigrations = (await Database.GetPendingMigrationsAsync()).ToList();
+            var databaseFile = Path.Combine(AppContext.BaseDirectory, "weather.db");
 
-            if (pendingMigrations.Any())
+            if (!File.Exists(databaseFile))
             {
-                var message = $"Pending migrations: {string.Join(',', pendingMigrations)}";
-                _logger.LogInformation(message);
-                await Database.MigrateAsync();
+                await using var fs = File.Create(databaseFile);
             }
-        }
 
-        /// <summary>
-        /// Executes TRUNCATE against the provided database table.
-        /// Use with extreme caution.
-        /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <returns></returns>
-        public async Task Truncate<TEntity>() where TEntity : class
-        {
-            var tableName = Set<TEntity>().EntityType.GetTableName();
-            await Database.ExecuteSqlRawAsync($"DELETE FROM {tableName}");
+            await Database.MigrateAsync();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -73,7 +64,7 @@ namespace Metasite.WeatherApp.Infrastructure.Storage
             else
             {
                 optionsBuilder
-                    .UseSqlite(_connectionString ?? "Data Source=servers.db")
+                    .UseSqlite(_connectionString ?? "Data Source=weather.db")
                     .LogTo(message => _logger.LogInformation(message), LogLevel.Information);
             }
 
@@ -82,7 +73,7 @@ namespace Metasite.WeatherApp.Infrastructure.Storage
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // TODO : set the db model
+            modelBuilder.Entity<WeatherConditions>().ToTable("WeatherConditions");
             base.OnModelCreating(modelBuilder);
         }
     }

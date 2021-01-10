@@ -2,7 +2,7 @@
   "profiles": {
     "Application": {
       "commandName": "Project",
-      "commandLineArgs": "server_list" // " --local"
+      "commandLineArgs": "weather --city Vilnius --city Athens"
     }
   }
 }

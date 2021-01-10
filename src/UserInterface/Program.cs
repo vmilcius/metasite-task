@@ -6,7 +6,6 @@
     using CommandHandlers;
     using Infrastructure;
     using Infrastructure.Storage;
-    using McMaster.Extensions.Hosting.CommandLine;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
@@ -22,7 +21,7 @@
                 .ConfigureCommandLineApplication<RootCommandHandler>(args, out var applicationState)
                 .Build();
 
-            var dbContext = host.Services.GetRequiredService<LocationsDbContext>();
+            var dbContext = host.Services.GetRequiredService<WeatherConditionsDbContext>();
             await dbContext.MigrateDatabase();
 
             await host.RunAsync();

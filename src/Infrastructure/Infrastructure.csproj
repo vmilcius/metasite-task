@@ -31,7 +31,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\lib\CommandLineUtils\src\CommandLineUtils\McMaster.Extensions.CommandLineUtils.csproj" />
     <ProjectReference Include="..\..\lib\CommandLineUtils\src\Hosting.CommandLine\McMaster.Extensions.Hosting.CommandLine.csproj" />
-    <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
   <ItemGroup>

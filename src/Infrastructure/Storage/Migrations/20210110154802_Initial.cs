@@ -8,23 +8,26 @@
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Servers",
+                name: "WeatherConditions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Distance = table.Column<int>(type: "INTEGER", nullable: false)
+                    Location = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Temperature = table.Column<double>(type: "REAL", nullable: false),
+                    Precipitation = table.Column<double>(type: "REAL", nullable: false),
+                    Type = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Servers", x => x.Id);
+                    table.PrimaryKey("PK_WeatherConditions", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Servers");
+                name: "WeatherConditions");
         }
     }
 }

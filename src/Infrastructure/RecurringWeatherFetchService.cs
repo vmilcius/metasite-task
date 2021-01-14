@@ -16,30 +16,40 @@
         private readonly IWeatherConditionsRepository _repository;
         private readonly IConsole _console;
         private readonly IEnumerable<string> _cities;
+        private readonly CancellationToken? _cancellationToken;
 
         public RecurringWeatherFetchService(
             IWeatherConditionsClient client,
             IWeatherConditionsRepository repository,
             IConsole console,
-            IEnumerable<string> cities)
+            IEnumerable<string> cities,
+            CancellationToken? cancellationToken = null)
         {
             _client = client;
             _repository = repository;
             _console = console;
             _cities = cities;
+            _cancellationToken = cancellationToken;
         }
 
-        public async Task StartAsync(CancellationToken ct)
+        public virtual async Task StartAsync(CancellationToken ct)
         {
-            while (!ct.IsCancellationRequested)
+            var token = _cancellationToken ?? ct;
+
+            while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    var conditions = (await _client.GetFor(_cities, ct)).ToList();
-                    await _repository.Store(conditions, ct);
+                    var conditions = (await _client.GetFor(_cities, token)).ToList();
+                    await _repository.Store(conditions, token);
                     PrintWeatherConditions(conditions);
 
-                    await Task.Delay(TimeSpan.FromSeconds(30), ct);
+                    await Task.Delay(TimeSpan.FromSeconds(30), token);
+                }
+                catch (TaskCanceledException)
+                {
+                    _console.WriteLine("Stopping.");
+                    return;
                 }
                 catch (Exception e)
                 {

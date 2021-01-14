@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "McMaster.Extensions.Hosting.CommandLine", "lib\CommandLineUtils\src\Hosting.CommandLine\McMaster.Extensions.Hosting.CommandLine.csproj", "{8ED8AE2A-A1E1-40BA-9268-0A6CD05F08B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "test\IntegrationTests\IntegrationTests.csproj", "{3FBC7A97-3677-4734-93B2-53E22041F7F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{8ED8AE2A-A1E1-40BA-9268-0A6CD05F08B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8ED8AE2A-A1E1-40BA-9268-0A6CD05F08B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8ED8AE2A-A1E1-40BA-9268-0A6CD05F08B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FBC7A97-3677-4734-93B2-53E22041F7F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FBC7A97-3677-4734-93B2-53E22041F7F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FBC7A97-3677-4734-93B2-53E22041F7F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FBC7A97-3677-4734-93B2-53E22041F7F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +63,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F79477D3-2788-4E81-B593-5C951C572323} = {319811F4-0CE9-4B4C-956C-9691A587C04E}
 		{8ED8AE2A-A1E1-40BA-9268-0A6CD05F08B4} = {319811F4-0CE9-4B4C-956C-9691A587C04E}
+		{3FBC7A97-3677-4734-93B2-53E22041F7F8} = {A0A1D85E-9EF8-4AD9-982E-C01D20CC494A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DFCF11BA-5C5D-4195-B02F-7891F337301D}

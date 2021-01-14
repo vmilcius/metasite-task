@@ -45,6 +45,7 @@
         private async Task<Response> GetWeatherConditions(string city, CancellationToken ct)
         {
             var response = await _client.GetAsync($"weather/{city}", ct);
+            response.EnsureSuccessStatusCode();
 
             var obj = await response
                 .Content

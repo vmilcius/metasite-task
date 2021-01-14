@@ -27,7 +27,7 @@
             _password = password;
         }
 
-        protected virtual Task<HttpResponseMessage> SendAsyncOverride(
+        public virtual Task<HttpResponseMessage> SendAsyncOverride(
             HttpRequestMessage message,
             CancellationToken ct)
         {

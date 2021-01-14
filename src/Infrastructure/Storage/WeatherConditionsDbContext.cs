@@ -65,7 +65,7 @@ namespace Metasite.WeatherApp.Infrastructure.Storage
             {
                 optionsBuilder
                     .UseSqlite(_connectionString ?? "Data Source=weather.db")
-                    .LogTo(message => _logger.LogInformation(message), LogLevel.Information);
+                    .LogTo(message => _logger.LogError(message), LogLevel.Error);
             }
 
             base.OnConfiguring(optionsBuilder);

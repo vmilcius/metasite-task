@@ -44,7 +44,6 @@
         {
             loggingBuilder
                 .ClearProviders()
-                .AddConsole()
                 .AddFile("activity.log")
                 .SetMinimumLevel(LogLevel.Information);
         }

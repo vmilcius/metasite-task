@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
+    using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
     using Domain;
@@ -45,6 +47,11 @@
                     PrintWeatherConditions(conditions);
 
                     await Task.Delay(TimeSpan.FromSeconds(30), token);
+                }
+                catch (HttpRequestException hre) when (hre.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    _console.WriteLine("Invalid options supplied.\nStopping.");
+                    return;
                 }
                 catch (TaskCanceledException)
                 {
